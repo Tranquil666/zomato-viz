@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zomato Restaurant Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-utensils"></i> Zomato Analytics Dashboard</h1>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalRestaurants">-</span>
+                        <span class="stat-label">Total Restaurants</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgRating">-</span>
+                        <span class="stat-label">Avg Rating</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalCities">-</span>
+                        <span class="stat-label">Cities</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="cityFilter">City:</label>
+                <select id="cityFilter">
+                    <option value="">All Cities</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="priceFilter">Price Range:</label>
+                <select id="priceFilter">
+                    <option value="">All Ranges</option>
+                    <option value="1">Budget (1)</option>
+                    <option value="2">Affordable (2)</option>
+                    <option value="3">Mid-range (3)</option>
+                    <option value="4">Expensive (4)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="ratingFilter">Min Rating:</label>
+                <select id="ratingFilter">
+                    <option value="">Any Rating</option>
+                    <option value="4.0">4.0+</option>
+                    <option value="4.5">4.5+</option>
+                </select>
+            </div>
+            <button id="resetFilters" class="reset-btn">
+                <i class="fas fa-refresh"></i> Reset Filters
+            </button>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Rating Distribution -->
+            <div class="chart-container">
+                <h3><i class="fas fa-star"></i> Rating Distribution</h3>
+                <canvas id="ratingChart"></canvas>
+            </div>
+
+            <!-- Top Cities -->
+            <div class="chart-container">
+                <h3><i class="fas fa-map-marker-alt"></i> Top Cities by Restaurant Count</h3>
+                <canvas id="cityChart"></canvas>
+            </div>
+
+            <!-- Price Range Distribution -->
+            <div class="chart-container">
+                <h3><i class="fas fa-dollar-sign"></i> Price Range Distribution</h3>
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <!-- Top Cuisines -->
+            <div class="chart-container">
+                <h3><i class="fas fa-pizza-slice"></i> Popular Cuisines</h3>
+                <canvas id="cuisineChart"></canvas>
+            </div>
+
+            <!-- Online Services -->
+            <div class="chart-container">
+                <h3><i class="fas fa-wifi"></i> Online Services Availability</h3>
+                <canvas id="servicesChart"></canvas>
+            </div>
+
+            <!-- Cost Analysis -->
+            <div class="chart-container">
+                <h3><i class="fas fa-chart-line"></i> Average Cost by City</h3>
+                <canvas id="costChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Restaurant Table -->
+        <div class="table-section">
+            <h3><i class="fas fa-table"></i> Restaurant Details</h3>
+            <div class="table-controls">
+                <input type="text" id="searchInput" placeholder="Search restaurants...">
+                <select id="sortBy">
+                    <option value="rating">Sort by Rating</option>
+                    <option value="votes">Sort by Votes</option>
+                    <option value="cost">Sort by Cost</option>
+                    <option value="name">Sort by Name</option>
+                </select>
+            </div>
+            <div class="table-container">
+                <table id="restaurantTable">
+                    <thead>
+                        <tr>
+                            <th>Restaurant</th>
+                            <th>City</th>
+                            <th>Cuisine</th>
+                            <th>Rating</th>
+                            <th>Votes</th>
+                            <th>Cost for Two</th>
+                            <th>Services</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
