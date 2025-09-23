@@ -82,6 +82,11 @@ def app_js():
     """Serve the JavaScript file"""
     return send_from_directory('.', 'app.js', mimetype='application/javascript')
 
+@app.route('/favicon.ico')
+def favicon():
+    """Serve an empty response for favicon requests"""
+    return ('', 204)
+
 @app.route('/script.js')
 def script_js():
     """Serve the legacy JavaScript file if needed"""
