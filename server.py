@@ -125,6 +125,33 @@ def health_check():
     
     return jsonify(status)
 
+@app.route('/api/reload-data')
+def reload_data():
+    """Manually reload the data and return detailed status"""
+    global restaurant_data
+    
+    logger.info("Manual data reload requested...")
+    
+    # Reset the data
+    restaurant_data = None
+    
+    # Attempt to load data
+    success = load_and_process_data()
+    
+    status = {
+        'reload_attempted': True,
+        'reload_successful': success,
+        'data_loaded': restaurant_data is not None,
+        'csv_file_exists': os.path.exists('zomato.csv'),
+        'current_directory': os.getcwd(),
+        'restaurant_count': len(restaurant_data) if restaurant_data is not None else 0
+    }
+    
+    if success:
+        return jsonify(status)
+    else:
+        return jsonify(status), 500
+
 @app.route('/script.js')
 def script_js():
     """Serve the legacy JavaScript file if needed"""
