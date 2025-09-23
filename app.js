@@ -3,7 +3,7 @@
 
 class ZomatoDashboard {
     constructor() {
-        this.baseURL = 'http://localhost:5000/api';
+        this.baseURL = '/api';
         this.charts = {};
         this.currentData = [];
         this.currentFilters = {
