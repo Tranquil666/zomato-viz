@@ -48,7 +48,7 @@ class ZomatoDashboard {
 
     async fetchAPI(endpoint, params = {}) {
         try {
-            const url = new URL(this.baseURL + endpoint);
+            const url = new URL(this.baseURL + endpoint, window.location.origin);
             Object.keys(params).forEach(key => {
                 if (params[key] && params[key] !== 'all') url.searchParams.append(key, params[key]);
             });
