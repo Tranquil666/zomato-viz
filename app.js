@@ -48,12 +48,18 @@ class ZomatoDashboard {
 
     async fetchAPI(endpoint, params = {}) {
         try {
-            const url = new URL(this.baseURL + endpoint, window.location.origin);
+            let url = this.baseURL + endpoint;
+            const queryParams = new URLSearchParams();
             Object.keys(params).forEach(key => {
-                if (params[key] && params[key] !== 'all') url.searchParams.append(key, params[key]);
+                if (params[key] && params[key] !== 'all') queryParams.append(key, params[key]);
             });
 
-            console.log(`Fetching: ${url.toString()}`); // Debug log
+            const paramString = queryParams.toString();
+            if (paramString) {
+                url += '?' + paramString;
+            }
+
+            console.log(`Fetching: ${url}`); // Debug log
             const response = await fetch(url);
             
             if (!response.ok) {
