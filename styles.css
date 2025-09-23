@@ -491,6 +491,74 @@ tr:hover td {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .header-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .filters-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group label {
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .reset-btn {
+        margin-top: 10px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Card-based layout for table on mobile */
+    #restaurantTable thead {
+        display: none; /* Hide table header on mobile */
+    }
+
+    #restaurantTable tr {
+        display: block;
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 15px;
+    }
+
+    #restaurantTable td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border: none;
+    }
+
+    #restaurantTable td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #2c3e50;
+        margin-right: 10px;
+    }
+
+    .cuisine-cell {
+        white-space: normal;
+        max-width: 100%;
+        text-align: right;
+    }
+
     .dashboard-container {
         padding: 15px;
     }

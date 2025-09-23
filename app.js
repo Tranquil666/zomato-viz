@@ -405,17 +405,17 @@ class ZomatoDashboard {
 
         tbody.innerHTML = data.map(restaurant => `
             <tr>
-                <td class="restaurant-name">${restaurant.name}</td>
-                <td>${restaurant.city}</td>
-                <td class="cuisine-cell">${restaurant.cuisines}</td>
-                <td class="rating-cell">
+                <td data-label="Restaurant" class="restaurant-name">${restaurant.name}</td>
+                <td data-label="City">${restaurant.city}</td>
+                <td data-label="Cuisine" class="cuisine-cell">${restaurant.cuisines}</td>
+                <td data-label="Rating" class="rating-cell">
                     ${restaurant.rating > 0 ? `${restaurant.rating.toFixed(1)} ⭐` : 'N/A'}
                 </td>
-                <td class="votes-cell">${restaurant.votes.toLocaleString()}</td>
-                <td class="cost-cell">
+                <td data-label="Votes" class="votes-cell">${restaurant.votes.toLocaleString()}</td>
+                <td data-label="Cost for Two" class="cost-cell">
                     ${restaurant.cost > 0 ? `₹${restaurant.cost.toLocaleString()}` : 'N/A'}
                 </td>
-                <td class="services-cell">
+                <td data-label="Services" class="services-cell">
                     ${restaurant.has_booking ? '<span class="service-badge booking" title="Table Booking Available">📅</span>' : ''}
                     ${restaurant.has_delivery ? '<span class="service-badge delivery" title="Online Delivery Available">🚚</span>' : ''}
                     ${restaurant.is_delivering ? '<span class="service-badge delivering" title="Currently Delivering">🟢</span>' : ''}
