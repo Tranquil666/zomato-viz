@@ -4,11 +4,26 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #667eea; /* Fallback color */
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: -webkit-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: -moz-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: -o-linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
     min-height: 100vh;
+    height: 100%;
     color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
 /* Force white text on all form elements */
@@ -28,6 +43,9 @@ select option {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
+    background: transparent; /* Ensure container doesn't override body background */
+    position: relative;
+    z-index: 1;
 }
 
 /* Header Styles */
@@ -98,6 +116,153 @@ select option {
     align-items: center;
     flex-wrap: wrap;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Insights Section */
+.insights-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.insights-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.insight-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #007bff;
+}
+
+.insight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.insight-card.highlight {
+    border-left-color: #28a745;
+}
+
+.insight-card.info {
+    border-left-color: #17a2b8;
+}
+
+.insight-card.trend {
+    border-left-color: #ffc107;
+}
+
+.insight-card.warning {
+    border-left-color: #dc3545;
+}
+
+.insight-icon {
+    font-size: 2rem;
+    color: #007bff;
+    min-width: 40px;
+}
+
+.insight-card.highlight .insight-icon {
+    color: #28a745;
+}
+
+.insight-card.info .insight-icon {
+    color: #17a2b8;
+}
+
+.insight-card.trend .insight-icon {
+    color: #ffc107;
+}
+
+.insight-card.warning .insight-icon {
+    color: #dc3545;
+}
+
+.insight-content h4 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.insight-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Export Section */
+.export-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.export-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.export-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4);
+}
+
+.export-btn:active {
+    transform: translateY(0);
+}
+
+.export-btn i {
+    font-size: 1.1rem;
 }
 
 .filter-group {
@@ -376,4 +541,149 @@ tr:hover td {
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #5a6fd8, #6a4190);
+}
+
+/* Error Message Styling */
+.error-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Table enhancements */
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+}
+
+.restaurant-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.cuisine-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rating-cell {
+    font-weight: 600;
+}
+
+.votes-cell {
+    color: #666;
+}
+
+.cost-cell {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.services-cell {
+    font-size: 1.2rem;
+}
+
+.service-badge {
+    display: inline-block;
+    margin: 0 2px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: help;
+}
+
+.service-badge.booking {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.service-badge.delivery {
+    background-color: rgba(23, 162, 184, 0.1);
+}
+
+.service-badge.delivering {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.no-services {
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Loading states */
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Chart loading state */
+.chart-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #666;
+}
+
+/* Enhanced button styles */
+button {
+    transition: all 0.3s ease;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    .filters-section,
+    .export-section {
+        display: none;
+    }
+    
+    .chart-container {
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
 }

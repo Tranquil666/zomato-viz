@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zomato Restaurant Analytics Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -102,6 +103,30 @@
             </div>
         </div>
 
+        <!-- Insights Section -->
+        <div class="insights-section">
+            <h3><i class="fas fa-lightbulb"></i> Smart Insights</h3>
+            <div id="insightsContainer" class="insights-grid">
+                <!-- Insights will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+            <h3><i class="fas fa-download"></i> Export Data</h3>
+            <div class="export-controls">
+                <button id="exportCSV" class="export-btn">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </button>
+                <button id="exportJSON" class="export-btn">
+                    <i class="fas fa-file-code"></i> Export JSON
+                </button>
+                <button id="printReport" class="export-btn">
+                    <i class="fas fa-print"></i> Print Report
+                </button>
+            </div>
+        </div>
+
         <!-- Restaurant Table -->
         <div class="table-section">
             <h3><i class="fas fa-table"></i> Restaurant Details</h3>
@@ -134,6 +159,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
