@@ -23,23 +23,39 @@ def load_and_process_data():
     global restaurant_data
     
     try:
+        logger.info("Starting data loading process...")
+        
+        # Check if file exists
+        if not os.path.exists('zomato.csv'):
+            raise Exception("zomato.csv file not found in the current directory")
+        
         # Try different encodings
         encodings = ['latin-1', 'utf-8', 'iso-8859-1', 'cp1252']
         df = None
         
         for encoding in encodings:
             try:
+                logger.info(f"Attempting to load CSV with {encoding} encoding...")
                 df = pd.read_csv('zomato.csv', encoding=encoding)
-                logger.info(f"Data loaded successfully using {encoding} encoding")
+                logger.info(f"Data loaded successfully using {encoding} encoding. Shape: {df.shape}")
                 break
-            except UnicodeDecodeError:
+            except UnicodeDecodeError as e:
+                logger.warning(f"Failed to load with {encoding} encoding: {e}")
+                continue
+            except Exception as e:
+                logger.error(f"Error loading CSV with {encoding} encoding: {e}")
                 continue
         
         if df is None:
             raise Exception("Could not read CSV with any supported encoding")
         
+        logger.info("Starting data cleaning and processing...")
+        
         # Clean and process data
+        initial_count = len(df)
         df = df.dropna(subset=['Restaurant Name'])
+        logger.info(f"Removed {initial_count - len(df)} rows with missing restaurant names")
+        
         df['Restaurant Name'] = df['Restaurant Name'].fillna('Unknown')
         df['City'] = df['City'].fillna('Unknown')
         df['Cuisines'] = df['Cuisines'].fillna('Unknown')
@@ -47,6 +63,8 @@ def load_and_process_data():
         df['Votes'] = pd.to_numeric(df['Votes'], errors='coerce').fillna(0)
         df['Average Cost for two'] = pd.to_numeric(df['Average Cost for two'], errors='coerce').fillna(0)
         df['Price range'] = pd.to_numeric(df['Price range'], errors='coerce').fillna(0)
+        
+        logger.info("Processing service columns...")
         
         # Preserve original service columns to identify true NaNs later
         original_services = df[['Has Table booking', 'Has Online delivery', 'Is delivering now']].copy()
@@ -56,15 +74,20 @@ def load_and_process_data():
         df['Has Online delivery'] = df['Has Online delivery'].fillna('No').str.lower() == 'yes'
         df['Is delivering now'] = df['Is delivering now'].fillna('No').str.lower() == 'yes'
         
+        logger.info("Starting data imputation...")
+        
         # Impute missing services data using the original state
         df = impute_missing_services(df, original_services)
 
         restaurant_data = df
-        logger.info(f"Processed {len(df)} restaurants successfully")
+        logger.info(f"Data processing completed successfully! Processed {len(df)} restaurants")
         return True
         
     except Exception as e:
-        logger.error(f"Error loading data: {e}")
+        logger.error(f"Critical error during data loading: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
         return False
 
 @app.route('/')
@@ -86,6 +109,21 @@ def app_js():
 def favicon():
     """Serve an empty response for favicon requests"""
     return ('', 204)
+
+@app.route('/api/health')
+def health_check():
+    """Health check endpoint to diagnose server status"""
+    global restaurant_data
+    
+    status = {
+        'server_running': True,
+        'data_loaded': restaurant_data is not None,
+        'csv_file_exists': os.path.exists('zomato.csv'),
+        'current_directory': os.getcwd(),
+        'restaurant_count': len(restaurant_data) if restaurant_data is not None else 0
+    }
+    
+    return jsonify(status)
 
 @app.route('/script.js')
 def script_js():
