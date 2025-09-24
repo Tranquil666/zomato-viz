@@ -18,6 +18,41 @@ CORS(app)
 # Global variable to store processed data
 restaurant_data = None
 
+def load_data_on_startup():
+    """Load data when the application starts up"""
+    global restaurant_data
+    
+    logger.info("Loading restaurant data on application startup...")
+    
+    if not os.path.exists('zomato.csv'):
+        logger.error("zomato.csv file not found! Data cannot be loaded.")
+        return False
+    
+    success = load_and_process_data()
+    if success:
+        logger.info("Data successfully loaded on startup!")
+    else:
+        logger.error("Failed to load data on startup. Will attempt to load on first API request.")
+    
+    return success
+
+# Load data when the app starts
+load_data_on_startup()
+
+def ensure_data_loaded():
+    """Ensure data is loaded, loading it if necessary"""
+    global restaurant_data
+    
+    if restaurant_data is None:
+        logger.info("Data not loaded, attempting to load now...")
+        load_data_on_startup()
+        
+        # If still None after loading attempt, return False
+        if restaurant_data is None:
+            return False
+    
+    return True
+
 def load_and_process_data():
     """Load and process the Zomato dataset"""
     global restaurant_data
@@ -160,7 +195,7 @@ def script_js():
 @app.route('/api/data')
 def get_data():
     """Get all restaurant data with optional filtering"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     # Get filter parameters
@@ -211,7 +246,7 @@ def get_data():
 @app.route('/api/stats')
 def get_stats():
     """Get dashboard statistics"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     # Apply same filters as data endpoint
@@ -254,7 +289,7 @@ def get_stats():
 @app.route('/api/analytics/rating-distribution')
 def get_rating_distribution():
     """Get rating distribution data"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     # Apply filters
@@ -273,7 +308,7 @@ def get_rating_distribution():
 @app.route('/api/analytics/top-cities')
 def get_top_cities():
     """Get top cities by restaurant count"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
@@ -287,7 +322,7 @@ def get_top_cities():
 @app.route('/api/analytics/price-distribution')
 def get_price_distribution():
     """Get price range distribution"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
@@ -302,7 +337,7 @@ def get_price_distribution():
 @app.route('/api/analytics/popular-cuisines')
 def get_popular_cuisines():
     """Get popular cuisines data"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
@@ -322,7 +357,7 @@ def get_popular_cuisines():
 @app.route('/api/analytics/services')
 def get_services_data():
     """Get online services availability data"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
@@ -338,7 +373,7 @@ def get_services_data():
 @app.route('/api/analytics/cost-by-city')
 def get_cost_by_city():
     """Get average cost by city"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
@@ -352,7 +387,7 @@ def get_cost_by_city():
 @app.route('/api/filters/cities')
 def get_cities():
     """Get list of all cities for filter dropdown"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     cities = sorted(restaurant_data['City'].unique().tolist())
@@ -361,7 +396,7 @@ def get_cities():
 @app.route('/api/insights')
 def get_insights():
     """Get advanced insights and recommendations"""
-    if restaurant_data is None:
+    if not ensure_data_loaded():
         return jsonify({'error': 'Data not loaded'}), 500
     
     filtered_df = apply_filters(restaurant_data)
