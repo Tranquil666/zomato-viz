@@ -37,7 +37,7 @@ def load_data_on_startup():
     return success
 
 # Load data when the app starts
-load_data_on_startup()
+# load_data_on_startup()  # Removed - will load on first API request instead
 
 def ensure_data_loaded():
     """Ensure data is loaded, loading it if necessary"""
